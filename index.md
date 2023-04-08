@@ -1,5 +1,2 @@
-Here you can say lots of fun things about your site.
-
-Maybe say a some things about yourself.
-
-Or maybe what you plan to blog about.
+A blog where I share some interesting information on topics that I am learning.
+The idea is to learn by doing, so will try and add code wherever possible.
