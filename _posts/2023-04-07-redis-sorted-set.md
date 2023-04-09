@@ -1,7 +1,7 @@
 # Redis Sorted Sets - Under the Hood
 
 ## Introduction
-[Redis Sorted Set](https://redis.io/docs/data-types/sorted-sets/) is a handy data structure to use when you want to implement leaderboards and rate limiters -- especially when you want to do them in real time. It lets you add elements with their scores (For example, user id with the game scores) and allows you to fetch not only the score, but also their ranks. Search, inserts, deletes and rank operations are O(lg(n)), on an average.
+[Redis Sorted Set](https://redis.io/docs/data-types/sorted-sets/) is a handy data structure to use when you want to implement leaderboards and rate limiters -- especially when you want to do them in real time. It lets you add elements with their scores (For example, user id with the game scores) and allows you to fetch not only the score, but also their ranks. Search, inserts, deletes and rank operations are O(log(n)), on an average.
 
 [This video](https://www.youtube.com/watch?v=MUKlxdBQZ7g) gives a good overview of the data structure and typical use cases.
 
@@ -18,13 +18,13 @@ At the heart of redis sorted set are two datastructures
 The hash map is straight forward and does not warrant much discussion. It just provides a O(1) look up, if we just need to look up the score for the member.
 
 ## Skiplist
-The Skiplist is the interesting data structure. SkipLists are <mark>probabilistic search structures</mark> that lets you do search, insert and delete in <mark>O(lg(N))</mark> time (not guaranteed, but higly likely). 
+The Skiplist is the interesting data structure. SkipLists are <mark>probabilistic search structures</mark> that lets you do search, insert and delete in <mark>O(lg(N))</mark> time (not guaranteed, but highly likely). 
 
  The [Open DSA Book](https://opendsa-server.cs.vt.edu/ODSA/Books/CS3/html/SkipList.html#) explains the internal implementation of this data structure.
 
 At the heart of it, a skiplist is a sorted linked list, but instead of just pointers to only the next node (which makes search O(N)), it has additional pointers to nodes further in the list. The key to the above is the sorted order -- the concept of skip lists work only because the elements are sorted. For the rest of the discussion, we use the term 'score' as that attribute of the elements that determine the sorting order.  
 
-Simplistically, one can imagine a skip list to comprise multiple lanes, where the slowest lane (level 0) is the regular linked list where every element has a pointer to the next node. Elements in the faster lanes (levels 1 and above) have pointers to elements that are further way (skips a few elements in between, and hence the name skip list). For example, the second lane (level 1) could skip one element -- head has a pointer to the 2nd element, which in turn has the pointer to the fourth element and so on. So, there are n/2 elements in the second lane. Similarly, the third lane (level 2) connects evey fourth element and so there are n/4 elements and so on. If an element is present in a higher lane, it will also be present in all the slower lanes below it. So, element 4 will be in all three lanes, element 2 will be in the first two lanes and so on. This is depicted in the picture below.
+Simplistically, one can imagine a skip list to comprise multiple lanes, where the slowest lane (level 0) is the regular linked list where every element has a pointer to the next node. Elements in the faster lanes (levels 1 and above) have pointers to elements that are further way (skips a few elements in between, and hence the name skip list). For example, the second lane (level 1) could skip one element -- head has a pointer to the 2nd element, which in turn has the pointer to the fourth element and so on. So, there are n/2 elements in the second lane. Similarly, the third lane (level 2) connects every fourth element and so there are n/4 elements and so on. If an element is present in a higher lane, it will also be present in all the slower lanes below it. So, element 4 will be in all three lanes, element 2 will be in the first two lanes and so on. This is depicted in the picture below.
 <div class = "Skip List 1">
     <img src = "SkipList1.jpg">
 </div>
@@ -80,7 +80,7 @@ For inserts, we use a logic similar to search. The first step is to identify the
         update[i].next[i] = to_insert_node
 ```
 
-Let us assume that we are inserting a new node 'h', with a score of 800. And let us assume that the maximum level for this node is 1. So, we will need to adjust pointers for the levels 0 and 1. In this example
+Let us assume that we are inserting a new node 'h', with a score of 800. And let us assume that the maximum level for this node is 1. So, we will need to adjust pointers for levels 0 and 1. In this example
 
 <code>
 update[0] = 'g'
