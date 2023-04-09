@@ -25,7 +25,9 @@ The Skiplist is the interesting data structure. SkipLists are <mark>probabilisti
 At the heart of it, a skiplist is a sorted linked list, but instead of just pointers to only the next node (which makes search O(N)), it has additional pointers to nodes further in the list. The key to the above is the sorted order -- the concept of skip lists work only because the elements are sorted. For the rest of the discussion, we use the term 'score' as that attribute of the elements that determine the sorting order.  
 
 Simplistically, one can imagine a skip list to comprise multiple lanes, where the slowest lane (level 0) is the regular linked list where every element has a pointer to the next node. Elements in the faster lanes (levels 1 and above) have pointers to elements that are further way (skips a few elements in between, and hence the name skip list). For example, the second lane (level 1) could skip one element -- head has a pointer to the 2nd element, which in turn has the pointer to the fourth element and so on. So, there are n/2 elements in the second lane. Similarly, the third lane (level 2) connects evey fourth element and so there are n/4 elements and so on. If an element is present in a higher lane, it will also be present in all the slower lanes below it. So, element 4 will be in all three lanes, element 2 will be in the first two lanes and so on. This is depicted in the picture below.
-![figure](SkipList1.jpg)
+<div class = "Skip List 1">
+    <img src = "SkipList1.jpg">
+</div>
 
 Now, let us see how this helps us to do search, insert and delete in O(log(N)).
 
@@ -85,7 +87,10 @@ update[0] = 'g'
 update[1] = 'f'
 </code>
 
-![Insert](SkipListIns.jpg)
+<div class = "Skip List Ins">
+    <img src = "SkipListIns.jpg">
+</div>
+
 Again, because of the skip pointers, this operation can be done in O(log(N)) complexity. 
 
 ### Calculating Rank
@@ -97,7 +102,9 @@ One of the most important use for the Redis sorted set is to calculate ranks. We
 One naive way to think about this is to store the rank with the element, along with the score. However, this will need us to recalculate the rank for all elements during every insert/delete/update and will negate the O(log(N)) advantage. The current implementation of redis solves this by a nifty logic. Instead of storing the rank with the element, we can store a variable called 'span' which indicates the number of elements that we need to skip to get to the next valid element in the current lane. This span is stored at all levels for all the elements and the *head* node. 
 
 For the skip list that we discussed in [the skip list section](#skiplist), the following are the values for the span, for different nodes. 
-![Span Values](SkipListSpan.jpg)
+<div class = "Span Values">
+    <img src = "SkipListSpan.jpg">
+</div>
 
 The span value has to be adjusted every time a new node is inserted or deleted. Updates can just be thought of as a delete followed by an insert. This is done by making a small modification to the insert logic specified above. As we build the *update* array, we also build another array called *rank* that has the rank of the corresponding node in the *update* array. For example, <code>rank[i]</code> will have the rank of element in <code>update[i]</code>. Once we have these values, the spans for all affected nodes can be calculated easily from the span of the update nodes and the different rank values. Note here that rank[0] is essentially the rank of the element just before the inserted node. In the above insert example,
 
@@ -205,7 +212,9 @@ One big assumption while obtaining the O(log(N)) complexity for the insert, dele
   ```
 When I ran this code for 10000 times, I got a proper power curve. This indicates that the random assignment of levels is good enough for all practical purposes.
 
-![figure](RandomDist.png) 
+<div class = "Random Distribution">
+    <img src = "RandomDist.png">
+</div>
 
 The redis source uses a slightly different implementation
 
