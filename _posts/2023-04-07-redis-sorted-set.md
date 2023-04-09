@@ -196,7 +196,7 @@ Finally, identifying the range is easily done using the above method. We just id
 
 ### Determining the random level 
 ---
-One big assumption while obtaining the O(log(N)) complexity for the insert, delete and search operations is that the skip list is organized well such that each level has half the number of elements than the level below and that the elements are equally spaced. However, this is expensive to achieve. So, instead, we typically assign a random maximum level for a node during insertion. Typically, we use a geometric distribution where there is a 50% probability that a node has one pointer, 25 % for two and so on. In the picture below, x axis is the maximum level and y axis is the number of elements that have this value as the maximum level. 
+One big assumption while obtaining the O(log(N)) complexity for the insert, delete and search operations is that the skip list is organized well such that each level has half the number of elements than the level below and that the elements are equally spaced. However, this is expensive to achieve. So, instead, we typically assign a random maximum level for a node during insertion. Typically, we use a geometric distribution where there is a 50% probability that a node has one pointer, 25 % for two and so on.  
 
 [Open DSA Book](https://opendsa-server.cs.vt.edu/ODSA/Books/CS3/html/SkipList.html#) has this implementation
 
@@ -211,6 +211,8 @@ One big assumption while obtaining the O(log(N)) complexity for the insert, dele
   }
   ```
 When I ran this code for 10000 times, I got a proper power curve. This indicates that the random assignment of levels is good enough for all practical purposes.
+
+In the picture below, x axis is the maximum level and y axis is the number of elements that have this value as the maximum level.
 
 <div class = "Random Distribution">
     <img src = "RandomDist.png">
