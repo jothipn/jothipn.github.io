@@ -40,7 +40,7 @@ To search for an element with a particular score, we start the search from the f
 * However, there are no more elements in that lane, so we drop one more level.
 * At level 0, we travel sequentially from 'f' till we reach 'g'
 
-So, instead of 7 Hops, we can get to 'e' in 3 hops. We never visit elements 'a','b', 'c' and 'e'.
+So, instead of 7 Hops, we can get to 'e' in 3 hops. We never visit elements 'a', 'b', 'c' and 'e'.
 
 The following code snippet implements this logic.
 
@@ -64,7 +64,7 @@ The following code snippet implements this logic.
 ---
 Inserts and deletes also take O(log(N)) on average. We will explain insert here, delete follows a similar logic.
 
-For inserts,we use a logic similar to search. The first step is to identify the maximum level for this node.  See the section on [determining the level](#determining-the-random-level). Once we have the maximum level, we identify the node after which we need to insert the given node, based on score (Similar to the search logic above). This has to be done for all levels, from 0 to maximum level. Once we have identified this node, it is just a matter of adjusting pointers for those lanes. The following code snippet demonstrates this logic. After the first for loop, <code>update[i]</code> will contain the node, for each level, that needs updation. The pointers are adjusted in the second loop.
+For inserts, we use a logic similar to search. The first step is to identify the maximum level for this node.  See the section on [determining the level](#determining-the-random-level). Once we have the maximum level, we identify the node after which we need to insert the given node, based on score (Similar to the search logic above). This has to be done for all levels, from 0 to maximum level. Once we have identified this node, it is just a matter of adjusting pointers for those lanes. The following code snippet demonstrates this logic. After the first for loop, <code>update[i]</code> will contain the node, for each level, that needs updation. The pointers are adjusted in the second loop.
 
 ```python
     current = self.head
@@ -153,7 +153,7 @@ Once the span variables are available, calculating the rank is straight forward.
         return rank
 ```
 
-In the example above, if we were to get the rank of element 'g', we will traverse through level 2 (span = 4), then level 2 (span = 2) and finally level 1 (span = 1), giving us a rank of 7 (4 + 2 +1)
+In the example above, if we were to get the rank of element 'g', we will traverse through level 2 (span = 4), then level 1 (span = 2) and finally level 0 (span = 1), giving us a rank of 7 (4 + 2 +1)
 
 Identifying the element with the given rank follows similar logic. We keep traversing the skip list and keep track of the ranks, like above. When we reach the desired rank, we just pull out the element.
 
@@ -196,7 +196,7 @@ Finally, identifying the range is easily done using the above method. We just id
 
 ### Determining the random level 
 ---
-One big assumption while obtaining the O(log(N)) complexity for the insert, delete and search operations is that the skip list is organized well such that each level has half the number of elements than the level below and that the elements are equally spaced. However, this is expensive to achieve. So, instead, we typically assign a random maximum level for a node during insertion. Typically, we use a geometric distribution where there is a 50% probability that a node has one pointer, 25 % for two and so on.
+One big assumption while obtaining the O(log(N)) complexity for the insert, delete and search operations is that the skip list is organized well such that each level has half the number of elements than the level below and that the elements are equally spaced. However, this is expensive to achieve. So, instead, we typically assign a random maximum level for a node during insertion. Typically, we use a geometric distribution where there is a 50% probability that a node has one pointer, 25 % for two and so on. In the picture below, x axis is the maximum level and y axis is the number of elements that have this value as the maximum level. 
 
 [Open DSA Book](https://opendsa-server.cs.vt.edu/ODSA/Books/CS3/html/SkipList.html#) has this implementation
 
