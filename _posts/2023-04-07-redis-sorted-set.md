@@ -8,7 +8,7 @@
 ## Implementation
 While there are many articles that explain the need for the sorted set and its usage, there is not much information on the actual implementation. This [article](https://scalegrid.io/blog/introduction-to-redis-data-structures-sorted-sets/) has a small section on the internals and pointer to the actual [source code][Source code], but does not get into the details.
 
-In this article, I will share snippets of [Python code][Python code], which is a simplified adaption of the original redis source code. This code was written with an intention to understand the underlying data structures and the actual implementation. To that effect, the Python code is neither complete nor thorough (missing hanlding corner cases etc). Please refer to the original [redis source code][source code] for the full-fledged implementation.
+In this article, I will share snippets of [Python code][Python code], which is a simplified adaption of the original redis source code. This code was written with an intention to understand the underlying data structures and the actual implementation. To that effect, the Python code is neither complete nor thorough (missing handling corner cases etc). Please refer to the original [redis source code][source code] for the full-fledged implementation.
 
 ## Core Data Structures
 At the heart of redis sorted set are two datastructures
