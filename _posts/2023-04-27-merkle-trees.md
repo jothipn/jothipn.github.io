@@ -18,12 +18,13 @@ To compare if the contents of two replicas are in sync, we start comparing the r
     <img src = "Inconsistency.jpg">
 </div>
 
+<br>
 The implementation of a Merkle Tree is fairly straight forward. Here is a [Java implementaion](https://github.com/richpl/merkletree). As outlined above, the "Leaf" class has an array of data blocks. The "MerkleTree" class has the digest, either of the data nodes or of the children. 
 
-As mentioned [here](def1), Cassandra's Merkle tree implemntation uses a perfect binary tree. Here, all leaves are at the same depth. So, to support 2<sup>127</sup> tokens, a Merkle treee of depth 127 is required. This is expensive to build as well as the memory costs are high. Cassandra does an optimization where it restricts the depth to 15. It splits the keys into 32768 (2<sup>15</sup>) ranges and does an effecient comparison.
+As mentioned [here](def1), Cassandra's Merkle tree implementation uses a perfect binary tree. Here, all leaves are at the same depth. So, to support 2<sup>127</sup> tokens, a Merkle treee of depth 127 is required. This is expensive to build and the memory costs are high. Cassandra does an optimization where it restricts the depth to 15. It splits the keys into 32768 (2<sup>15</sup>) ranges and does an effecient comparison.
 
 ## Summary
-Whenever you next face a solution where you want to securely verify the integrity of distributed data, you should definitely consider Merkle trees as one of the options.
+Whenever you next face a solution where you want to securely verify the integrity of distributed data, Merkle trees should list in the top of your options.
 
 
 [def1]: http://distributeddatastore.blogspot.com/2013/07/cassandra-using-merkle-trees-to-detect.html
