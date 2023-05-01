@@ -18,7 +18,47 @@ To compare if the contents of two replicas are in sync, we start comparing the r
     <img src = "Inconsistency.jpg">
 </div>
 
-<br>
+The following is a simple code snippet for this.
+
+```python
+    def compareTrees(self, leftTree: MerkleTree, rightTree: MerkleTree):
+        if (leftTree is None and rightTree is None):
+            return True
+
+        if (leftTree is not None and rightTree is None):
+            print("LT [%s], RT None" % leftTree.name)
+            return False
+
+        if (leftTree is None and rightTree is not None):
+            print("RT [%s], LT None" % rightTree.name)
+            return False
+        
+        if (leftTree.is_leaf() and not rightTree.is_leaf()):
+            print("LT [%s] is a leaf, RT [%s] is not" % (leftTree.name, rightTree.name))
+            return False
+        elif (not leftTree.is_leaf() and rightTree.is_leaf()):
+            print("LT [%s] is not a leaf, RT [%s] is" % (leftTree.name, rightTree.name))
+            return False
+
+        if (leftTree.get_digest() == rightTree.get_digest()):
+            return True
+
+        if (leftTree.is_leaf()): #Both are leaves
+            if (leftTree.left_leaf.get_data_block() != rightTree.left_leaf.get_data_block()):
+                print ("Discrepany found in left leaf. Left Tree %s, Right Tree %s" % (leftTree.name, rightTree.name))
+                print(f"L-DB {leftTree.left_leaf.get_data_block()}, R_DB {rightTree.left_leaf.get_data_block()}")
+            else:
+                print ("Discrepany found in right leaf. Left DB %s, Right DB %s" % (leftTree.name, rightTree.name))
+                print(f"L-DB {leftTree.right_leaf.get_data_block()}, R_DB {rightTree.right_leaf.get_data_block()}")
+
+            return False       
+        
+        if (self.compareTrees(leftTree.get_left_tree(), rightTree.get_left_tree())):
+            return self.compareTrees(leftTree.get_right_tree(), rightTree.get_right_tree())
+        else:
+            return False
+```
+
 The implementation of a Merkle Tree is fairly straight forward. Here is a [Java implementaion](https://github.com/richpl/merkletree). As outlined above, the "Leaf" class has an array of data blocks. The "MerkleTree" class has the digest, either of the data nodes or of the children. 
 
 As mentioned [here](def1), Cassandra's Merkle tree implementation uses a perfect binary tree. Here, all leaves are at the same depth. So, to support 2<sup>127</sup> tokens, a Merkle treee of depth 127 is required. This is expensive to build and the memory costs are high. Cassandra does an optimization where it restricts the depth to 15. It splits the keys into 32768 (2<sup>15</sup>) ranges and does an effecient comparison.
