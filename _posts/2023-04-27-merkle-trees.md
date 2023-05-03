@@ -61,7 +61,7 @@ The following is a simple code snippet for this.
 
 The implementation of a Merkle Tree is fairly straight forward. Here is a [Java implementaion](https://github.com/richpl/merkletree). As outlined above, the "Leaf" class has an array of data blocks. The "MerkleTree" class has the digest, either of the data nodes or of the children. 
 
-As mentioned [here](def1), Cassandra's Merkle tree implementation uses a perfect binary tree. Here, all leaves are at the same depth. So, to support 2<sup>127</sup> tokens, a Merkle treee of depth 127 is required. This is expensive to build and the memory costs are high. Cassandra does an optimization where it restricts the depth to 15. It splits the keys into 32768 (2<sup>15</sup>) ranges and does an effecient comparison.
+Typically, most Merkle Tree implementations use a perfect binary tree where all leaves are at the same depth. [Cassandra](def1) also uses a perfect binary tree. So, to support 2<sup>127</sup> tokens, a Merkle treee of depth 127 is required. This is expensive to build and the memory costs are high. Cassandra does an optimization where it restricts the depth to 15. It splits the keys into 32768 (2<sup>15</sup>) ranges and does an effecient comparison.
 
 ## Summary
 Whenever you next face a solution where you want to securely verify the integrity of distributed data, Merkle trees should list in the top of your options.
