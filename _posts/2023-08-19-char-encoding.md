@@ -118,34 +118,10 @@ Here, we see that the UTF-16 encoded file is smaller than the equivalent UTF-8 o
     <img src = "Tamil-OD.png">
 </div>
 
-There is an interesting observation for the discerning eye. The Tamil.txt file has 5 unicode characters (த,ம,ி,ழ,ஂ). The UTF-8 encoded file has 15 bytes, 3 bytes each for the each character. But the UTF-16 encoded file has 12 bytes, instead of 10 bytes. That is because there is a 2 byte header at the beginning of the UTF-16 file. This is called the Byte order mark (BOM) which is used to denote the "endian"ness of the encoding. If it is 'FEFF', it is big ending encoded and if it is 'FFFE', it is little-endian encoding. In this file, we see 'FFEE' which denotes that this is encoded using the little-endian format. While UTF-16 files mandatorily have this BOM, it is optional for the UTF-8 encoded files as there is no alternative sequence of bytes in a character. This [article](https://www.w3.org/International/questions/qa-byte-order-mark) gives a good overview.
+There is an interesting observation for the discerning eye. The Tamil.txt file has 5 unicode characters (த,ம,ி,ழ,ஂ). The UTF-8 encoded file has 15 bytes, 3 bytes each for the each character. But the UTF-16 encoded file has 12 bytes, instead of 10 bytes. That is because there is a 2 byte header at the beginning of the UTF-16 file. This is called the Byte order mark (BOM) which is used to denote the "endian"ness of the encoding. If it is 'FEFF', it is big ending encoded and if it is 'FFFE', it is little-endian encoding. In this file, we see 'FFFE' which denotes that this is encoded using the little-endian format. While UTF-16 files mandatorily have this BOM, it is optional for the UTF-8 encoded files as there is no alternative sequence of bytes in a character. This [article](https://www.w3.org/International/questions/qa-byte-order-mark) gives a good overview.
 
 Coming back to our discussion, in general, for code points between 2048 and 65536, UTF-16 will be more compact than UTF-8 because it does not use those control bits (leading 1's in the first byte and 10 in the continuation bytes).
 
 ## Summary
 
 In this post, we tried to give a taste of what character encoding, Unicode and the Unicode encoding techniques, UTF-8 and UTF-16. While we use UTF-8 all the time, it is possible that we might not have paid much attention to the details behind this fabulous encoding scheme. Hopefully this post helped with gaining that much better understanding.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Summary
-Whenever you next face a solution where you want to securely verify the integrity of distributed data, Merkle trees should list in the top of your options.
-
-
-[def1]: http://distributeddatastore.blogspot.com/2013/07/cassandra-using-merkle-trees-to-detect.html
-[def]: https://en.wikipedia.org/wiki/Merkle_tree
