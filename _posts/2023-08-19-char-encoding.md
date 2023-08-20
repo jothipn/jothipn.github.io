@@ -1,55 +1,49 @@
 # Character Encoding
 
 ## Introduction
-How do we decode a character? Author James Lane Allen seems to think that it is adversity that reveals the character. But let us leave the decoding of human character to philosophers and social scientists and solve a more tractable problem. How do we decode an encoded sequence of bytes?
+How do we decode a character? Author James Lane Allen seems to think that it is adversity that reveals the character. But let us leave the decoding of human character to philosophers and social scientists and solve a more tractable problem. How do we decode a text that is encoded as a sequence of bytes?
 
-Before we do that, let us take a minute to understand what we mean by encoding here. By encoding, we are talking about the process or algorithm that can translate data from one representation to another. Data stored in memory has a different representation than the data stored in a file or sent over a network. Files created by one process is typically read by other processes. The code for the reading process could have been written in a different programming language and even running in a different environment. Hence, data stored in a file should be a self contained sequence of bytes from which we should be able to reconstruct the original representation.
-
-One of the immediate application of encoding is with character encoding. We will delve on this topic in this post.
+The process of encoding textual data into a sequence of bytes is called character encoding and will be topic of interst in this post.
 
 ## ASCII
 
-ASCII, American Standard Code for Information Exchange, is the most common character encoding that has been in use for the past 60 years or so. At the heart of it, it uses 8 bits for encoding characters. The first bit was traditionally used as a control bit and is obsolete now, it is always 0. So, we have 7 bits that lets us encode 128 characters. Of these, there are 95 printable characters and 33 non-printing character codes. The 95 printable ones are predmoninatly the Engligh alphabets (A-Z)(a-z)(0-9) and some punctuation symbols.
+ASCII, American Standard Code for Information Exchange, is the most common character encoding that has been in use for the past 60 years or so. At the heart of it, it uses 8 bits for encoding characters. The first bit was traditionally used as a control bit and is obsolete now, it is now always set to 0. So, we have 7 bits that lets us encode 128 characters. Of these, there are 95 printable characters and 33 non-printing character codes. The 95 printable ones are predmoninatly the Engligh alphabets (A-Z)(a-z)(0-9) and some punctuation symbols.
 
-The easy way to think of this is that there is a big lookup table where each character is assigned one specific sequence of bits. For example, the sequence of bits 1100001 (61 Hex, 97 Decimal) represents the character 'a'.
+The easy way to think of this is that there is a big lookup table where each character is assigned one specific sequence of bits. For example, the sequence of bits 1100001 (61 Hex, 97 Decimal) represents the character 'a'. I have reproduced the ASCII table from (here)[https://www.rapidtables.com/code/text/ascii-table.html].
+
 
 <div class = "Ascii Table">
     <img src = "Ascii-table.png">
 </div>
 
-The interesting question is this - are these assignments made aribtrarily or was there some good thought behind it. The answer of course is that it was quite intentional. 
+The interesting question is this - are these assignments aribtrary or was there some good thought behind it. The answer, of course, is that this mapping was quite intentional. Let us look at the mapping for 'A' and 'a'.
 
-<code>
-A is Hex 41 0100 0001
+  A is Hex 41 0100 0001
+  a is Hex 61 0110 0001
 
-a is Hex 61  0110 0001
-</code>
+As we can see, there is just a on bit difference between the encoding of 'A' and 'a'. So, it is very easy to convert from the lower case to upper case just by flipping the third bit. Similarly,
 
-As we can see, there is just a on bit flip between A and a. So, it is very easy to convert from the lower case to upper case just by flipping the third bit. Similarly,
+  0 is Hex 30 0011 0000
+  9 is Hex 39 0011 1001
 
-<code>
-0 is Hex 30 0011 0000
+One can just get the ASCII encoding of a digit by just setting the the top four bits with 0011 or Hex 3. Pretty neat!
 
-9 is Hex 39 0011 1001
-</code>
+If we get a sequence of bits that we know has been encoded in ASCII, we can just separate out the bytes, look up that sequence in the ASCII table and get the actual English characters for them.
 
-One can just get the Ascii encoding of a digit by just prefixing the the top four bits with 0011 or Hex 3. Pretty neat!
+For example, let us assume that we are given this sequence of bits 01011001011001010111001100100001 to decode
 
-So, if one gets a sequence of bits that we know has been encoded in Ascii, we can just separate out the bytes, look up that sequence in the ascii table and get the actual English characters for them.
+1 Split into sets of 8 bits. 01011001 01100101 01110011 00100001
+2 Look up in the ascii chart for each of these sequence of bytes
+* 01011001 is 59 (Hex) that encodes character 'Y'
+* 01100101 is 65 (Hex) that encodes character 'e'
+* 01110011 is 73 (Hex) that encodes character 's'
+* 00100001 is 21 (Hex) that encodes the punctuation mark '!'
 
-For example, let us assume that we are given this sequence of bits 01011001011001010111001100100001
-* Step 1. Split into sets of 8 bits. 01011001 01100101 01110011 00100001
-* Step 2. Look up in the ascii chart for each of these sequence of bytes
-** 01011001 is 59 (Hex) that encodes character 'Y'
-** 01100101 is 65 (Hex) that encodes character 'e'
-** 01110011 is 73 (Hex) that encodes character 's'
-** 00100001 is 21 (Hex) that encodes the punctuation mark '!'
-
-So, the above sequence of bits represent the String "Yes!"
+So, the above sequence of bits represent the string "Yes!"
 
 ## Unicode
 
-ASCII, for all its adoption and efficiency, suffers from one big limitation. It uses only 7 bits to encode and hence is limited to encoding only 127 characters. There is of course a need to support characters from non English languages and other characters like emojis and so on. So, every country started using their own non ASCII character encoding techniques and this led to massive compatibility issues when such systems need to exchange data. The  [Unicode consortium](https://home.unicode.org) was formed to standardize this. This unicode consortium acts now as the standards body to character encoding. Just like the ASCII table, there is a massive unicode table where all the different characters (more than 1Million of them) are present. However, instead of assigning bit sequences to these code points, the unicode standard just assigns an index, called a code point, to them. These code points are of the form "U+". The entire unicode code space has code points from U+0000 through U+10FFFF.
+ASCII, for all its adoption and efficiency, suffers from one big limitation. It uses only 7 bits to encode and hence is limited to encoding only 127 characters. There is of course a need to support characters from non English languages and other characters like emojis. To solve this, every country and communitry started using developing their own non ASCII character encoding techniques. This led to massive compatibility issues when such systems needed to exchange data. The [Unicode consortium](https://home.unicode.org) was formed to address this. Unicode consortium acts now as the standards body to character encoding. Just like the ASCII table, there is a massive unicode table where all the different characters (more than 1 Million of them) are published. However, instead of assigning bit sequences to these characters, the Unicode standard just assigns an index, called a code point, to them. These code points are of the form "U+". The entire unicode code space has code points from U+0000 through U+10FFFF.
 
 OK, we now have these giant [Unicode look up table](https://www.ssec.wisc.edu/~tomw/java/unicode.html). But how do we actually encode them into bits and bytes so that systems can exchange data without any problems? For that, we will need Unicode encoding techniques. The two most popular encoding techniques are UTF-8 and UTF-18.
 
@@ -59,23 +53,26 @@ The primary problem with ASCII was that it could support only 127 code points as
 There were a few technical problems with this:
 
 1. This is not backward compatible with ASCII. The first 127 code points, which just needed one byte with ASCII will now be encoded as 2 bytes.
-2. Related to the above, English characters, which do form a lot of the content around the world, all occupy twice the space than their ASCII encoded equivalent. This is space inefficient.
+2. This is related to the above observation. With UTF-16, English characters, which do form a lot of the content around the world, occupy twice the space than their ASCII encoded equivalent. This is space inefficient.
 3. Unicode now supports 1M+ code points. With 2 bytes, only 65K can be supported. So, UTF-16 evolved into variable width encoding with 1 or 2 16-bit code units with a complicated logic using surrogate pairs to support the full set.
 
 ## UTF-8
 
-For the reasons mentioned above, UTF-8 was created. This is such an elegant solution as explained in this [great video](https://www.youtube.com/watch?v=MijmeoH9LT4&t=7s). It basically uses a variable length encoding that uses the minimal number of bytes that is needed to encode the particular code point. For example, the first 127 code points are encoded exactly as they would be in ASCII. For code points that are greater than 127, more bytes are used. The following table explains how the code point to unicode conversion happens.
+For the reasons mentioned above, UTF-8 was created. This is such an elegant solution as explained in this [great video](https://www.youtube.com/watch?v=MijmeoH9LT4&t=7s). It basically uses a variable length encoding that uses the minimal number of bytes that is needed to encode the particular code point. For example, the first 127 code points are encoded exactly as they would be in ASCII. The following table explains how the code point to unicode conversion happens.
+
 <div class = "UTF-8">
     <img src = "UTF-8.png">
 </div>
+
+For code points 0-127, UTF-8 encoding is identical to ASCII encoding, which makes it backward compliant. For code points between 128-2047, we use two bytes. The leading bits of the first byte read 110 and the leading bits of the next byte reads 10. For code points between 2048 and 65535, 3 bytes are used for the encoding with the leading bits in the first byte reading 1110 and the leading bits for the continuation bytes read 10. Similar logic is used for the four byte encoding as well.
 
 Because it is backward compatible with Ascii and is also space efficient, UTF-8 is the most prevalent encoding that is used in the world today.
 
 Let us try and encode a character using UTF-8 to understand how the process works. Let us encode the Devanagiri character अ. This has the code point U+0905 (or Decimal 2309). The way we do this is as follows.
 
-1. Identify the number of bytes needed for this encoding. Since this is 2309, which is greater than 2048, we will need 3 bytes.
-2. A 3 byte UTF encoded sequence has the following format (See the table above) 1110 xxxx 10yy yyyy 10zz zzzz
-3. 0905 is 0000 1001 0000 0001
+1. 0905 is 0000 1001 0000 0001.
+2. Identify the number of bytes needed for this encoding. Since this is 2309, which is greater than 2048, we will need 3 bytes.
+3. A 3 byte UTF encoded sequence has the following format (See the table above) 1110 xxxx 10yy yyyy 10zz zzzz 
 4. So, fill in the bits from 3 into the x,y and z in 2, from the back.
 5. This will give us 1110 0000 1010 0100 1000 0101. This is E0 A4 85,
 
@@ -119,7 +116,9 @@ Here, we see that the UTF-16 encoded file is smaller than the equivalent UTF-8 o
     <img src = "Tamil-OD.png">
 </div>
 
-In general, for code points 2048 and 65536, UTF-16 will be more compact than UTF-8 because it does not use those control bits (leading 1's in the first byte and 10 in the continuation bytes).
+There is an interesting observation for the discerning eye. The Tamil.txt file has 5 unicode characters (த,ம,ி,ழ,ஂ). The UTF-8 encoded file has 15 bytes, 3 bytes each for the each character. But the UTF-16 encoded file has 12 bytes, instead of 10 bytes. That is because there is a 2 byte header at the begining of the UTF-16 file. This is called the Byte order mark (BOM) which is used to denote the "endian"ness of the encoding. If it is 'FEFF', it is big ending encoded and if it is 'FFFE', it is litte-endian encoding. In this file, we see 'FFEE' which denotes that this is encoded using the little-endian format. While UTF-16 files mandatoriy have this BOM, it is optional for the UTF-8 encoded files as there is no alternative sequence of bytes in a character. This (article)[https://www.w3.org/International/questions/qa-byte-order-mark] gives a good overview.
+
+Coming back to our discusstion, in general, for code points between 2048 and 65536, UTF-16 will be more compact than UTF-8 because it does not use those control bits (leading 1's in the first byte and 10 in the continuation bytes).
 
 ## Summary
 
