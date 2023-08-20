@@ -64,7 +64,7 @@ The following code snippet implements this logic.
 ---
 Inserts and deletes also take O(log(N)) on average. We will explain insert here, delete follows a similar logic.
 
-For inserts, we use a logic similar to search. The first step is to identify the maximum level for this node.  See the section on [determining the level](#determining-the-random-level). Once we have the maximum level, we identify the node after which we need to insert the given node, based on score (Similar to the search logic above). This has to be done for all levels, from 0 to maximum level. Once we have identified this node, it is just a matter of adjusting pointers for those lanes. The following code snippet demonstrates this logic. After the first for loop, <code>update[i]</code> will contain the node, for each level, that needs updation. The pointers are adjusted in the second loop.
+For inserts, we use a logic similar to search. The first step is to identify the maximum level for this node.  See the section on [determining the level](#determining-the-random-level). Once we have the maximum level, we identify the node after which we need to insert the given node, based on score (Similar to the search logic above). This has to be done for all levels, from 0 to maximum level. Once we have identified this node, it is just a matter of adjusting pointers for those lanes. The following code snippet demonstrates this logic. After the first for loop, <code>update[i]</code> will contain the node, for each level, that needs updating. The pointers are adjusted in the second loop.
 
 ```python
     current = self.head
@@ -236,7 +236,7 @@ int zslRandomLevel(void) {
 
 ## Summary
 
-In this post, we looked at some of the internals of the redis sorted set data structure and what it does, under the hood, to maintain a sorted list with good average complexity for search, inserts and deletes. We also saw how the Redis team uses the *span* attribute to maintain and calculate ranks of the elements so that the leaderboard use cases are easily served.
+In this post, we looked at some of the internals of the redis sorted set data structure and what it does, under the hood, to maintain a sorted list with good average complexity for search, inserts and deletes. We also saw how the Redis team uses the *span* attribute to maintain and calculate ranks of the elements so that the leader board use cases are easily served.
 
 [Source code]: https://github.com/redis/redis/blob/unstable/src/t_zset.c
 [Python code]: https://github.com/jothipn/redissortedset
