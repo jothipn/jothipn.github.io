@@ -86,7 +86,7 @@ We can easily verify this. Let us create a file, called Devanagari.txt that has 
 
 As we can see, od shows the same sequence of bytes that we arrived after our encoding exercise. 
 
-Let us also do the decoding exercise once. Let us code this sequence of bits F09F8D8ECF80.
+Let us also do the decoding exercise once. Let us decode this sequence of bits F09F8D8ECF80.
 
 1. If we write F09F8D8ECF80 out - it reads 1111 0000 1001 1111 1000 1101 1000 1110 1100 1111 1000 0000
 2. The first byte starts with 1111 indicating that it is a 4 byte encoded character.
