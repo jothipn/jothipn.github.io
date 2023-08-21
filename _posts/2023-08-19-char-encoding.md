@@ -72,7 +72,7 @@ Because it is backward compatible with Ascii and is also space efficient, UTF-8 
 
 Let us try and encode a character using UTF-8 to understand how the process works. Let us encode the Devanagari character अ. This has the code point U+0905 (or Decimal 2309). The way we do this is as follows.
 
-1. 0905 is 0000 1001 0000 0001.
+1. 0905 is 0000 1001 0000 0101.
 2. Identify the number of bytes needed for this encoding. Since this is 2309, which is greater than 2048, we will need 3 bytes.
 3. A 3 byte UTF encoded sequence has the following format (See the table above) 1110 xxxx 10yy yyyy 10zz zzzz 
 4. So, fill in the bits from 3 into the x,y and z in 2, from the back.
